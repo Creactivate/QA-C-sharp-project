@@ -24,12 +24,29 @@ namespace Base_Project_C_Sharp
         {
             cmd = new MySqlCommand(query,Con);
             MySqlDataReader data = cmd.ExecuteReader();
+            string line = " ";
+            // print field names
+            for (int i = 0; i < data.FieldCount; i++)
+            {
+                if (i == data.FieldCount - 1)
+                {
+                    Console.WriteLine($"|  {data.GetName(i).PadLeft(15, ' ')}  |");
+                }
+                else
+                {
+                    Console.Write($"|  {data.GetName(i).PadLeft(15, ' ')}  ");
+                }
+                line += "--------------------";
+            }
+            Console.WriteLine(line.Substring(0,line.Length-1)+ " ");
+            
             while (data.Read())
             {
-                Console.WriteLine("headings");
-                Console.WriteLine("_____________________________________________");
+                
+                
                 for (int i = 0; i < data.FieldCount;i++)
                 {
+                    
                     if (i == data.FieldCount - 1)
                     {
                         Console.WriteLine($"|  {data[i]}  |");
@@ -40,8 +57,9 @@ namespace Base_Project_C_Sharp
                     }
                     
                 }
-                Console.WriteLine("_____________________________________________");
+                
             }
+            data.Close();
             Console.ReadLine();
             Console.Clear();
         }

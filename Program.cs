@@ -13,7 +13,6 @@ namespace Base_Project_C_Sharp
         static void Main(string[] args)
         {
             string menuOneEntry = "";
-            string wholeMenuEntry = "";
             string menuTwoEntry = "";
 
             while (menuOneEntry != "q")
@@ -34,16 +33,39 @@ namespace Base_Project_C_Sharp
                 {
                     while (menuTwoEntry != "q")
                     {
-                        Console.WriteLine("Press 1 to view whole sales table.");
-                        Console.WriteLine("Press 2 to view filter.");
+                        Console.WriteLine("Press 1 to view a specific year's sales");
+                        Console.WriteLine("Press 2 to view a specific month's sales in a specific year");
+                        Console.WriteLine("Press 3 to view a specific year's total sales");
+                        Console.WriteLine("Press 4 to view a specific month's total sales in a specific year");
                         Console.WriteLine("Press q to exit this menu.");
 
                         menuTwoEntry = Console.ReadLine();
                         Console.Clear();
 
+                        int year = 1000;
+                        string month = "";
+
                         switch (menuTwoEntry)
                         {
-                            case "1": db.printTable("SELECT * FROM sales"); break;
+                            case "1":
+                                year = getYear();
+                                db.printTable($"SELECT LPAD(CONVERT(SaleID, CHAR), 15, ' ') AS 'SaleID', LPAD(Product_Name, 15, ' ') AS 'Product Name', LPAD(CONVERT(Qty, CHAR),15,' ') AS 'Quantity', LPAD(CONVERT(Price, CHAR),15,' ') as 'Price', LPAD(CONVERT(DATE(Sale_Date), CHAR), 15, ' ') as 'Sale Date' FROM sales WHERE year(Sale_Date)={year}");
+                                break;
+
+                            case "2":
+                                year = getYear();
+                                month = getMonth();
+                                db.printTable($"SELECT LPAD(CONVERT(SaleID, CHAR), 15, ' '), LPAD(Product_Name, 15, ' '), LPAD(CONVERT(Qty, CHAR),15,' '), LPAD(CONVERT(Price, CHAR),15,' '), LPAD(CONVERT(Sale_Date, CHAR), 15, ' ') FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
+                                break;
+                            case "3":
+                                year = getYear();
+                                db.printTable($"SELECT SUM(Qty*Price) AS Total_Sales_{year} FROM sales WHERE year(Sale_Date)={year}");
+                                break;
+                            case "4":
+                                year = getYear();
+                                month = getMonth();
+                                db.printTable($"SELECT SUM(Qty*Price) AS 'Total_Sales_{month}_{year} (£)' FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
+                                break;
                         }
                     }
                 }
@@ -74,6 +96,71 @@ namespace Base_Project_C_Sharp
             Console.WriteLine("Success!");
             Console.ReadLine();
             Console.Clear();
+        }
+
+        public static int getYear()
+        {
+            int input = 0;
+            bool validity = false;
+            while (validity == false)
+            {
+                try
+                {
+                    Console.WriteLine("Please enter the year needed:");
+                    input = Int32.Parse(Console.ReadLine());
+                    if (input >= 1000 && input <= 9999)
+                    {
+                        validity = true;
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid input please try again");
+                        validity = false;
+                        continue;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("An error occured, please try again");
+                    validity = false;
+                    continue;
+                }
+            }
+            return input;
+        }
+
+        public static string getMonth()
+        {
+            string input = "";
+            bool validity = false;
+            while (validity == false)
+            {
+                try
+                {
+                    Console.WriteLine("Please enter the name of the month needed:");
+                    input = Console.ReadLine().ToLower();
+                    string[] months = { "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december" };
+                    if (Array.IndexOf(months, input) == -1) 
+                    {
+                        Console.Clear();
+                        validity = false;
+                        Console.WriteLine("Invalid entry, please try again");
+                    } else
+                    {
+                        validity = true;
+                        Console.Clear();
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("An error occured, please try again");
+                    validity = false;
+                    continue;
+                }
+            }
+            return input;
         }
     }
 }
