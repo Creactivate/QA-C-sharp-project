@@ -55,19 +55,20 @@ namespace Base_Project_C_Sharp
                             case "2":
                                 year = getYear();
                                 month = getMonth();
-                                db.printTable($"SELECT LPAD(CONVERT(SaleID, CHAR), 15, ' '), LPAD(Product_Name, 15, ' '), LPAD(CONVERT(Qty, CHAR),15,' '), LPAD(CONVERT(Price, CHAR),15,' '), LPAD(CONVERT(Sale_Date, CHAR), 15, ' ') FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
+                                db.printTable($"SELECT LPAD(CONVERT(SaleID, CHAR), 15, ' ') AS 'SaleID', LPAD(Product_Name, 15, ' ') AS 'Product Name', LPAD(CONVERT(Qty, CHAR),15,' ') AS 'Quantity', LPAD(CONVERT(Price, CHAR),15,' ') as 'Price', LPAD(CONVERT(DATE(Sale_Date), CHAR), 15, ' ') as 'Sale Date' FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
                                 break;
                             case "3":
                                 year = getYear();
-                                db.printTable($"SELECT SUM(Qty*Price) AS Total_Sales_{year} FROM sales WHERE year(Sale_Date)={year}");
+                                db.printTable($"SELECT LPAD(SUM(Qty*Price), 15, ' ') AS '{year} Sales' FROM sales WHERE year(Sale_Date)={year}");
                                 break;
                             case "4":
                                 year = getYear();
                                 month = getMonth();
-                                db.printTable($"SELECT SUM(Qty*Price) AS 'Total_Sales_{month}_{year} (£)' FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
+                                db.printTable($"SELECT LPAD(SUM(Qty*Price), 15, ' ') AS '{month} {year}' FROM sales WHERE year(Sale_Date)={year} AND MONTHNAME(Sale_Date)='{month}'");
                                 break;
                         }
                     }
+                    menuTwoEntry = "";
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace Base_Project_C_Sharp
                     continue;
                 }
             }
-            return input;
+            return input.Substring(0,1).ToUpper() + input.Substring(1);
         }
     }
 }
