@@ -38,16 +38,18 @@ namespace Base_Project_C_Sharp
                     {
                         Console.Write($"|  {data[i]}  ");
                     }
-                    Console.WriteLine("_____________________________________________");
+                    
                 }
-
+                Console.WriteLine("_____________________________________________");
             }
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void insertIntoTable(string productName, float price, int qty)
         {
             //Insert values into table
-            cmd = new MySqlCommand($"INSERT INTO nbs(productName, Qty, Price) VALUES({productName}, {qty}, {price}",Con);
+            cmd = new MySqlCommand($"INSERT INTO sales(Product_Name, Qty, Price) VALUES('{productName}', {qty}, {price})",Con);
             cmd.ExecuteNonQuery();
         }
     }

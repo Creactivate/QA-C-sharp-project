@@ -43,7 +43,7 @@ namespace Base_Project_C_Sharp
 
                         switch (menuTwoEntry)
                         {
-                            case "1": db.printTable("SELECT * FROM nbs"); break;
+                            case "1": db.printTable("SELECT * FROM sales"); break;
                         }
                     }
                 }
@@ -73,6 +73,7 @@ namespace Base_Project_C_Sharp
 
             Console.WriteLine("Success!");
             Console.ReadLine();
+            Console.Clear();
         }
     }
 }
