@@ -78,6 +78,7 @@ namespace Base_Project_C_Sharp
             string productName = "";
             float price = 0;
             int qty = 0;
+            DateTime date = new DateTime();
 
             Console.WriteLine("Please enter product name: ");
             productName = Console.ReadLine();
@@ -91,8 +92,13 @@ namespace Base_Project_C_Sharp
             qty = Int32.Parse(Console.ReadLine());
             Console.Clear();
 
+            Console.WriteLine("Please enter date sold in (DD/MM/YYYY) format: ");
+            date = DateTime.Parse(Console.ReadLine());
+            Console.Clear();
+
             DBInteraction db = new DBInteraction();
-            db.insertIntoTable(productName, price, qty);
+            //db.insertIntoTable(productName, price, qty);
+            db.insertIntoTableDate(productName, price, qty, date);
 
             Console.WriteLine("Success!");
             Console.ReadLine();

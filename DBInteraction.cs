@@ -70,5 +70,15 @@ namespace Base_Project_C_Sharp
             cmd = new MySqlCommand($"INSERT INTO sales(Product_Name, Qty, Price) VALUES('{productName}', {qty}, {price})",Con);
             cmd.ExecuteNonQuery();
         }
+
+        public void insertIntoTableDate(string productName, float price, int qty, DateTime date)
+        {
+            //date formatting
+            string dateString = date.ToString("yyyy/MM/dd HH:mm:ss");
+            
+            //Insert values into table
+            cmd = new MySqlCommand($"INSERT INTO sales(Product_Name, Qty, Price, Sale_Date) VALUES('{productName}', {qty}, {price}, '{dateString}')", Con);
+            cmd.ExecuteNonQuery();
+        }
     }
 }
